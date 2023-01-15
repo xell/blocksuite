@@ -11,6 +11,7 @@ export enum DatabaseBlockDisplayMode {
 export class DatabaseBlockModel extends BaseBlockModel {
   flavour = 'affine:database' as const;
   tag = literal`affine-database`;
+  title: string;
   /**
    * Tip: this is a yArray proxy from upstream
    */
@@ -22,6 +23,7 @@ export class DatabaseBlockModel extends BaseBlockModel {
     props: PropsWithId<Partial<BlockSuiteModelProps.DatabaseBlockModel>>
   ) {
     super(page, props);
+    this.title = props.title ?? '';
     this.columns = props.columns ?? [];
     this.mode = DatabaseBlockDisplayMode.Database;
   }

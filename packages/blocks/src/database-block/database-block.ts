@@ -118,12 +118,19 @@ export class DatabaseBlock extends NonShadowLitElement {
 
     .affine-database-block-title {
       width: 100%;
-      font-size: 32px;
-      line-height: 50px;
-      font-weight: 500;
+      min-height: 1em;
+      height: 40px;
+      font-size: 22px;
+      font-weight: 700;
       border: 0;
       font-family: inherit;
       color: inherit;
+    }
+    .affine-database-block-title::placeholder {
+      color: var(--affine-placeholder-color);
+    }
+    .affine-database-block-title:disabled {
+      background-color: transparent;
     }
   `;
   @property({
@@ -157,7 +164,13 @@ export class DatabaseBlock extends NonShadowLitElement {
 
     return html`
       <div style="border: 1px solid;">
-        <div class="affine-database-block-title">database header</div>
+        <div>
+          <input
+            class="affine-database-block-title"
+            .value=${this.model.title}
+            placeholder="Database"
+          ></input>
+        </div>
         ${DatabaseHeader(this)} ${DataBaseRowContainer(this)}
       </div>
     `;

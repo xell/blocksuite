@@ -100,6 +100,9 @@ export function syncBlockProps(
       const columns = Y.Array.from(props.columns ?? []);
       yBlock.set('prop:columns', columns);
     }
+    if (!yBlock.has('prop:title')) {
+      yBlock.set('prop:title', '');
+    }
   }
 }
 
