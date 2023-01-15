@@ -9,11 +9,9 @@ import {
 } from '../__internal__/index.js';
 import { repeat } from 'lit/directives/repeat.js';
 import TagTypes = BlockSuiteInternal.ColumnTypes;
-import { assertEqual } from '@blocksuite/global/utils';
+import { assertEquals } from '@blocksuite/global/utils';
 import { DatabaseBlockDisplayMode } from './database-model.js';
 import { styleMap } from 'lit/directives/style-map.js';
-
-const MODEL_CELL_WIDTH = 200; // px
 
 // @ts-expect-error
 function TagCircle(tag: TagTypes) {
@@ -52,8 +50,8 @@ function DatabaseHeader(block: DatabaseBlock) {
 function DataBaseRowContainer(block: DatabaseBlock) {
   const model = block.model;
   const host = block.host;
-  assertEqual(model.mode, DatabaseBlockDisplayMode.Database);
-  assertEqual(
+  assertEquals(model.mode, DatabaseBlockDisplayMode.Database);
+  assertEquals(
     model.children.every(child => child.flavour === 'affine:row'),
     true
   );
@@ -85,7 +83,7 @@ function DataBaseRowContainer(block: DatabaseBlock) {
         model.children,
         child => child.id,
         (child, idx) => {
-          assertEqual(child.flavour, 'affine:row');
+          assertEquals(child.flavour, 'affine:row');
           return html`
             <div class="affine-database-block-row" data-row-id="${idx}">
               ${BlockElementWithService(child, host, () => {

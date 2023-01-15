@@ -7,7 +7,7 @@ import {
   NonShadowLitElement,
 } from '../__internal__/index.js';
 import { customElement, property } from 'lit/decorators.js';
-import { assertEqual } from '@blocksuite/global/utils';
+import { assertEquals } from '@blocksuite/global/utils';
 import type { DatabaseBlockModel } from '../database-block/index.js';
 import ColumnTypes = BlockSuiteInternal.ColumnTypes;
 import type { BaseBlockModel } from '@blocksuite/store';
@@ -71,7 +71,7 @@ export class RowBlock extends NonShadowLitElement {
 
   get columns(): ColumnTypes[] {
     const model = this.model.page.getParent(this.model);
-    assertEqual(model?.flavour, 'affine:database');
+    assertEquals(model?.flavour, 'affine:database');
     const parent = model as DatabaseBlockModel;
     return parent.columns;
   }
