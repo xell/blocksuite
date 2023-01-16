@@ -50,8 +50,8 @@ function createChildMap(yChildIds: Y.Array<string>) {
 }
 
 export type PageData = {
-  [key: string]: YBlock;
-};
+  tags: Y.Map<Y.Map<unknown>>;
+} & Record<string, YBlock>;
 
 export class Page extends Space<PageData> {
   public workspace: Workspace;
@@ -61,7 +61,6 @@ export class Page extends Space<PageData> {
   private _blockMap = new Map<string, BaseBlockModel>();
   private _splitSet = new Set<Text | PrelimText>();
   private _synced = false;
-  private _tags: Y.Map<Y.Map<unknown>>;
 
   // TODO use schema
   private _ignoredKeys = new Set<string>(
@@ -85,7 +84,6 @@ export class Page extends Space<PageData> {
     idGenerator: IdGenerator = uuidv4
   ) {
     super(id, doc, awareness);
-    this._tags = this.doc.getMap(`tags:${this.id}`);
     this.workspace = workspace;
     this._idGenerator = idGenerator;
   }
@@ -105,6 +103,12 @@ export class Page extends Space<PageData> {
 
   get root() {
     return Array.isArray(this._root) ? this._root[0] : this._root;
+  }
+
+  get tags() {
+    assertExists(this.root);
+    assertExists(this.root.tags);
+    return this.root.tags;
   }
 
   get rootLayer() {
@@ -175,23 +179,23 @@ export class Page extends Space<PageData> {
   }
 
   updateBlockTag<Tag extends BlockTag>(id: BaseBlockModel['id'], tag: Tag) {
-    const already = this._tags.has(id);
+    const already = this.tags.has(id);
     let tags: Y.Map<unknown>;
     if (!already) {
       tags = new Y.Map();
     } else {
-      tags = this._tags.get(id) as Y.Map<unknown>;
+      tags = this.tags.get(id) as Y.Map<unknown>;
     }
     this.transact(() => {
       if (!already) {
-        this._tags.set(id, tags);
+        this.tags.set(id, tags);
       }
       tags.set(tag.type, tag);
     });
   }
 
   getBlockTags(model: BaseBlockModel): Record<string, BlockTag> {
-    const tags = this._tags.get(model.id);
+    const tags = this.tags.get(model.id);
     if (!tags) {
       return {};
     }
@@ -657,6 +661,9 @@ export class Page extends Space<PageData> {
     const yText = yBlock.get('prop:text') as Y.Text;
     const text = new Text(this, yText);
     model.text = text;
+    if (props.flavour === 'affine:page') {
+      model.tags = yBlock.get('sys:tags') as Y.Map<Y.Map<unknown>>;
+    }
 
     const yChildren = yBlock.get('sys:children');
     if (yChildren instanceof Y.Array) {

@@ -27,6 +27,9 @@ export function assertValidChildren(
 export function initSysProps(yBlock: YBlock, props: Partial<BlockProps>) {
   yBlock.set('sys:id', props.id);
   yBlock.set('sys:flavour', props.flavour);
+  if (props.flavour === 'affine:page') {
+    yBlock.set('sys:tags', new Y.Map());
+  }
 
   const yChildren = new Y.Array();
   yBlock.set('sys:children', yChildren);
