@@ -179,7 +179,7 @@ export class DatabaseBlockSettingsSidebar extends LitElement {
   `;
 
   @property()
-  show = process.env.NODE_ENV === 'development';
+  show = false;
 
   @property()
   onSelectType!: (type: ColumnTypes['type']) => void;
