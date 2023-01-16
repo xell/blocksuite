@@ -22,6 +22,9 @@ export function initFeatureFlags(page: Page) {
   if (params.get('surface') !== null) {
     page.awareness.setFlag('enable_surface', true);
   }
+  if (params.get('database') !== null || initParam === 'database') {
+    page.awareness.setFlag('enable_database', true);
+  }
 }
 
 /**
