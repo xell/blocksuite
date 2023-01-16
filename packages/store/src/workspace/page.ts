@@ -225,6 +225,15 @@ export class Page extends Space<PageData> {
     return null;
   }
 
+  getFrameParent(block: BaseBlockModel): BaseBlockModel | null {
+    const parent = this.getParent(block);
+    if (parent !== null && parent.flavour !== 'affine:frame') {
+      return this.getFrameParent(parent);
+    } else {
+      return parent;
+    }
+  }
+
   getParent(block: BaseBlockModel) {
     if (!this.root) return null;
 
