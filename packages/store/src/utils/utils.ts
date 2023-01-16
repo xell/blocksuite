@@ -53,7 +53,12 @@ export function syncBlockProps(
 
     // TODO compare with current yBlock value
     if (props[key] !== undefined) {
-      yBlock.set('prop:' + key, props[key]);
+      if (props.flavour === 'affine:database' && key === 'columns') {
+        const columns = Y.Array.from(props.columns ?? []);
+        yBlock.set('prop:columns', columns);
+      } else {
+        yBlock.set('prop:' + key, props[key]);
+      }
     }
   });
 
