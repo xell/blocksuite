@@ -174,17 +174,17 @@ export class Page extends Space<PageData> {
     return this._blockMap.get(id) ?? null;
   }
 
-  updateBlockTag<Tag extends BlockTag>(model: BaseBlockModel, tag: Tag) {
-    const already = this._tags.has(model.id);
+  updateBlockTag<Tag extends BlockTag>(id: BaseBlockModel['id'], tag: Tag) {
+    const already = this._tags.has(id);
     let tags: Y.Map<unknown>;
     if (!already) {
       tags = new Y.Map();
     } else {
-      tags = this._tags.get(model.id) as Y.Map<unknown>;
+      tags = this._tags.get(id) as Y.Map<unknown>;
     }
     this.transact(() => {
       if (!already) {
-        this._tags.set(model.id, tags);
+        this._tags.set(id, tags);
       }
       tags.set(tag.type, tag);
     });

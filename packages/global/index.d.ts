@@ -74,16 +74,16 @@ declare namespace BlockSuiteInternal {
     decimal: number;
   }
 
-  interface OptionTagType<Enum extends string = string>
+  interface SelectTagType<Selection extends string = string>
     extends BaseTagType<string> {
-    type: 'affine-tag:option';
-    enum: Enum[];
+    type: 'affine-tag:select';
+    selection: Selection[];
   }
 
-  type TagTypes = OptionTagType | NumberTagType | TextTagType;
+  type TagTypes = SelectTagType | NumberTagType | TextTagType;
 
   interface BlockColumnType extends BaseTagType {
-    type: 'affine-column:block';
+    type: 'affine-column:single-text';
     // no value here, the value depends on the row block
   }
 

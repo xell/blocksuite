@@ -4,7 +4,7 @@
  * the page structure will be automatically loaded from provider.
  * In these cases, these functions should not be called.
  */
-import { BaseBlockModel, Page, Text, Workspace } from '@blocksuite/store';
+import { Page, Text, Workspace } from '@blocksuite/store';
 import BlockTag = BlockSuiteInternal.BlockTag;
 
 export function heavy(workspace: Workspace) {
@@ -80,7 +80,7 @@ export function database(workspace: Workspace) {
 
     const frameId = page.addBlockByFlavour('affine:frame', {}, pageBlockId);
     type Option = 'Done' | 'TODO' | 'WIP';
-    const options = ['Done', 'TODO', 'WIP'] as Option[];
+    const selection = ['Done', 'TODO', 'WIP'] as Option[];
     const databaseId = page.addBlockByFlavour(
       'affine:database',
       {
@@ -88,7 +88,7 @@ export function database(workspace: Workspace) {
           {
             id: '1',
             type: 'affine-tag:text',
-            name: 'Tag',
+            name: 'Name',
             metadata: {
               color: '#FA851E',
               width: 100,
@@ -97,19 +97,9 @@ export function database(workspace: Workspace) {
           },
           {
             id: '2',
-            type: 'affine-tag:option',
-            name: 'Option',
-            enum: options,
-            metadata: {
-              color: '#C7BAF3',
-              width: 100,
-              hide: false,
-            },
-          },
-          {
-            id: '3',
-            type: 'affine-column:block',
-            name: 'Name',
+            type: 'affine-tag:select',
+            name: 'Select',
+            selection,
             metadata: {
               color: '#C7BAF3',
               width: 100,
@@ -122,27 +112,14 @@ export function database(workspace: Workspace) {
     );
     const row1Id = page.addBlockByFlavour('affine:row', {}, databaseId);
     const row2Id = page.addBlockByFlavour('affine:row', {}, databaseId);
-    page.addBlockByFlavour(
-      'affine:paragraph',
-      {
-        text: new Text(page, 'hello, world'),
-      },
-      row1Id
-    );
-    page.addBlockByFlavour(
-      'affine:paragraph',
-      {
-        text: new Text(page, 'test'),
-      },
-      row2Id
-    );
-    page.updateBlockTag(page.getBlockById(row1Id)!, {
+
+    page.updateBlockTag(row1Id, {
       type: '1',
       value: 'text1',
     });
 
-    page.updateBlockTag<BlockTag<BlockSuiteInternal.OptionTagType<Option>>>(
-      page.getBlockById(row2Id) as BaseBlockModel,
+    page.updateBlockTag<BlockTag<BlockSuiteInternal.SelectTagType<Option>>>(
+      row2Id,
       {
         type: '2',
         value: 'TODO',

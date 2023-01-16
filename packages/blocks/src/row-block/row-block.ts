@@ -48,10 +48,14 @@ export class RowBlock extends NonShadowLitElement {
     .affine-row-block-container {
       display: flex;
       flex-direction: row;
+      align-items: center;
       width: 100%;
+      min-height: 32px;
     }
     .affine-row-block-cell {
       display: inline-block;
+      color: var(--affine-text-color);
+      border-right: 1px solid rgb(238, 238, 237);
     }
   `;
   @property({
@@ -90,7 +94,8 @@ export class RowBlock extends NonShadowLitElement {
           this.columns,
           column => column.id,
           column => {
-            if (column.type === 'affine-column:block') {
+            if (column.type === 'affine-column:single-text') {
+              throw new Error('not supported');
               const block = this.model.children[idx];
               idx++;
               if (block) {

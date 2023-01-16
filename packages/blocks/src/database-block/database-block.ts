@@ -43,6 +43,7 @@ function DatabaseHeader(block: DatabaseBlock) {
           `;
         }
       )}
+      <div class="affine-database-block-add-column">+</div>
     </div>
   `;
 }
@@ -61,8 +62,8 @@ function DataBaseRowContainer(block: DatabaseBlock) {
       .affine-database-block-header {
         display: flex;
         flex-direction: row;
-        border-top: 1px black solid;
       }
+
       .affine-database-block-column {
       }
 
@@ -75,7 +76,7 @@ function DataBaseRowContainer(block: DatabaseBlock) {
 
       .affine-database-block-row {
         width: 100%;
-        border-top: 1px black solid;
+        border-top: 1px solid rgb(238, 238, 237);
       }
     </style>
     <div class="affine-database-block-rows">
@@ -101,6 +102,11 @@ function DataBaseRowContainer(block: DatabaseBlock) {
 // cannot find children in shadow dom
 export class DatabaseBlock extends NonShadowLitElement {
   static styles = css`
+    .affine-database-block {
+      border-top: 1px solid rgb(238, 238, 237);
+      border-bottom: 1px solid rgb(238, 238, 237);
+    }
+
     .affine-database-block-tag-circle {
       width: 12px;
       height: 12px;
@@ -126,11 +132,31 @@ export class DatabaseBlock extends NonShadowLitElement {
       font-family: inherit;
       color: inherit;
     }
+
     .affine-database-block-title::placeholder {
       color: var(--affine-placeholder-color);
     }
+
     .affine-database-block-title:disabled {
       background-color: transparent;
+    }
+
+    .affine-database-block-footer {
+      border-top: 1px solid rgb(238, 238, 237);
+    }
+
+    .affine-database-block-add-row {
+      user-select: none;
+      transition: background 20ms ease-in 0s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      height: 32px;
+      width: 100%;
+      padding-left: 8px;
+      font-size: 14px;
+      line-height: 20px;
+      border-top: 1px solid rgb(233, 233, 231);
     }
   `;
   @property({
@@ -159,11 +185,15 @@ export class DatabaseBlock extends NonShadowLitElement {
     this.model.childrenUpdated.on(() => this.requestUpdate());
   }
 
+  public _addRow() {
+    this.model.page.addBlockByFlavour('affine:row', {}, this.model.id);
+  }
+
   protected render() {
     this.setAttribute(BLOCK_ID_ATTR, this.model.id);
 
     return html`
-      <div style="border: 1px solid;">
+      <div class="affine-database-block">
         <div>
           <input
             class="affine-database-block-title"
@@ -172,6 +202,13 @@ export class DatabaseBlock extends NonShadowLitElement {
           ></input>
         </div>
         ${DatabaseHeader(this)} ${DataBaseRowContainer(this)}
+        <div class="affine-database-block-footer">
+          <div class="affine-database-block-add-row"
+               @click=${this._addRow}
+          >
+            + New
+          </div>
+        </div>
       </div>
     `;
   }
