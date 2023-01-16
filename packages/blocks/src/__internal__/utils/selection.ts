@@ -213,14 +213,7 @@ export function focusBlockByModel(
 ) {
   const defaultPageBlock = getDefaultPageBlock(model);
 
-  if (
-    matchFlavours(model, [
-      'affine:embed',
-      'affine:divider',
-      'affine:code',
-      'affine:database',
-    ])
-  ) {
+  if (isNonTextBlock(model)) {
     defaultPageBlock.selection.state.clear();
     const rect = getBlockElementByModel(model)?.getBoundingClientRect();
     rect && defaultPageBlock.signals.updateSelectedRects.emit([rect]);

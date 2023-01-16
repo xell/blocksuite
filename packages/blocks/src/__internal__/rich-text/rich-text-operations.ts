@@ -20,7 +20,11 @@ import {
   supportsChildren,
   getModelByElement,
 } from '../utils/index.js';
-import { assertExists, matchFlavours } from '@blocksuite/global/utils';
+import {
+  assertEquals,
+  assertExists,
+  matchFlavours,
+} from '@blocksuite/global/utils';
 
 export function handleBlockEndEnter(page: Page, model: ExtendedModel) {
   const parent = page.getParent(model);
@@ -282,7 +286,6 @@ export function handleLineStartBackspace(page: Page, model: ExtendedModel) {
           'affine:embed',
           'affine:divider',
           'affine:code',
-          'affine:database',
         ])
       ) {
         window.requestAnimationFrame(() => {
@@ -292,6 +295,16 @@ export function handleLineStartBackspace(page: Page, model: ExtendedModel) {
             page.captureSync();
             page.deleteBlock(model);
           }
+        });
+      } else if (
+        previousSibling &&
+        matchFlavours(previousSibling, ['affine:row'])
+      ) {
+        window.requestAnimationFrame(() => {
+          const parent = page.getParent(previousSibling);
+          assertExists(parent);
+          assertEquals(parent.flavour, 'affine:database');
+          focusBlockByModel(parent, 'start');
         });
       } else {
         const richText = getRichTextByModel(model);

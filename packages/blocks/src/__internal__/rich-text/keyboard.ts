@@ -123,15 +123,6 @@ export function createKeyboardBindings(page: Page, model: BaseBlockModel) {
       model.children.length === 0
     ) {
       handleLineStartBackspace(page, model);
-    } else if (
-      isEnd &&
-      parent &&
-      matchFlavours(parent, ['affine:row']) &&
-      parent.children.indexOf(model) === parent.children.length - 1 &&
-      model.text?.length === 0
-    ) {
-      page.captureSync();
-      page.moveBlock(model, parent, false);
     } else if (isEmptyList && isLastChild) {
       // Before
       // - line1
