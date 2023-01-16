@@ -49,6 +49,7 @@ export const defaultStore: SerializedStore = {
       'sys:id': '0',
       'sys:flavour': 'affine:page',
       'sys:children': ['1'],
+      'sys:tags': {},
     },
     '1': {
       'sys:flavour': 'affine:frame',
