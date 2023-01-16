@@ -9,6 +9,7 @@ export enum DatabaseBlockDisplayMode {
 }
 
 export class DatabaseBlockModel extends BaseBlockModel {
+  static version = 1;
   flavour = 'affine:database' as const;
   tag = literal`affine-database`;
   title: string;
